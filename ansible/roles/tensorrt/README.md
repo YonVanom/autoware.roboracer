@@ -11,10 +11,18 @@ This role installs TensorRT and cuDNN following [the official NVIDIA TensorRT In
 
 ## Manual Installation
 
-```bash
-# For the environment variables
-wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64.env && source /tmp/amd64.env
+### Set up the environment variables
 
+Choose **one** ROS distribution and run the corresponding command.
+
+#### ROS 2 Humble
+
+```bash
+wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64.env && \
+source /tmp/amd64.env
+```
+
+```bash
 sudo apt-get install -y \
 libcudnn8=${cudnn_version} \
 libnvinfer10=${tensorrt_version} \
@@ -33,6 +41,39 @@ libnvinfer10 \
 libnvinfer-plugin10 \
 libnvonnxparsers10 \
 libcudnn8-dev \
+libnvinfer-dev \
+libnvinfer-plugin-dev \
+libnvonnxparsers-dev \
+libnvinfer-headers-dev \
+libnvinfer-headers-plugin-dev
+```
+
+#### ROS 2 Jazzy
+
+```bash
+wget -O /tmp/amd64.env https://raw.githubusercontent.com/autowarefoundation/autoware/main/amd64_jazzy.env && \
+source /tmp/amd64.env
+```
+
+```bash
+sudo apt-get install -y \
+libcudnn9-cuda-12=${cudnn_version} \
+libnvinfer10=${tensorrt_version} \
+libnvinfer-plugin10=${tensorrt_version} \
+libnvonnxparsers10=${tensorrt_version} \
+libcudnn9-dev-cuda-12=${cudnn_version} \
+libnvinfer-dev=${tensorrt_version} \
+libnvinfer-plugin-dev=${tensorrt_version} \
+libnvinfer-headers-dev=${tensorrt_version} \
+libnvinfer-headers-plugin-dev=${tensorrt_version} \
+libnvonnxparsers-dev=${tensorrt_version}
+
+sudo apt-mark hold \
+libcudnn9-cuda-12 \
+libnvinfer10 \
+libnvinfer-plugin10 \
+libnvonnxparsers10 \
+libcudnn9-dev-cuda-12 \
 libnvinfer-dev \
 libnvinfer-plugin-dev \
 libnvonnxparsers-dev \

@@ -35,8 +35,8 @@ repositories:
   # universe
   universe/autoware_universe:
     type: git
-    url: https://github.com/autowarefoundation/autoware_universe.git
-    version: 0.49.0
+    url: https://github.com/YonVanom/autoware_universe.av4ev_gokart.git
+    version: roboracer_humble
   universe/external/tier4_ad_api_adaptor: # TODO(TIER IV): Migrate to AD API and remove this repository entry.
     type: git
     url: https://github.com/tier4/tier4_ad_api_adaptor.git

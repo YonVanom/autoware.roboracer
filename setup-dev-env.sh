@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Set up development environment for Autoware Core/Universe.
-# Usage: setup-dev-env.sh <ros2_installation_type('core' or 'universe')> [-y] [-v] [--no-nvidia]
+# Usage: setup-dev-env.sh <ros2_installation_type('core' or 'universe')> [-y] [-v] [--no-nvidia] [--jetson]
 # Note: -y option is only for CI.
 
 set -e
@@ -15,6 +15,8 @@ print_help() {
     echo "  -v              Enable debug outputs"
     echo "  --no-nvidia     Disable installation of the NVIDIA-related roles ('cuda' and 'tensorrt')"
     echo "  --no-cuda-drivers Disable installation of 'cuda-drivers' in the role 'cuda'"
+    echo "  --jetson        Install for Nvidia Jetson (implies --no-nvidia and --no-cuda-drivers,"
+    echo "                  and disables agnocast which causes a kernel panic on Jetson)"
     echo "  --runtime       Disable installation dev package of role 'cuda' and 'tensorrt'"
     echo "  --data-dir      Set data directory (default: $HOME/autoware_data)"
     echo "  --download-artifacts"
@@ -50,6 +52,13 @@ while [ "$1" != "" ]; do
         ;;
     --no-cuda-drivers)
         # Disable installation of 'cuda-drivers' in the role 'cuda'.
+        option_no_cuda_drivers=true
+        ;;
+    --jetson)
+        # Install for Nvidia Jetson: disable NVIDIA roles (JetPack provides CUDA/TensorRT)
+        # and disable agnocast (incompatible with Jetson kernel, causes kernel panic).
+        option_jetson=true
+        option_no_nvidia=true
         option_no_cuda_drivers=true
         ;;
     --runtime)
@@ -121,6 +130,11 @@ fi
 # Check installation of CUDA Drivers
 if [ "$option_no_cuda_drivers" = "true" ]; then
     ansible_args+=("--extra-vars" "cuda_install_drivers=false")
+fi
+
+# Check Jetson flag
+if [ "$option_jetson" = "true" ]; then
+    ansible_args+=("--extra-vars" "jetson=true")
 fi
 
 # Check installation of dev package

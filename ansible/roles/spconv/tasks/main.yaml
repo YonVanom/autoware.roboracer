@@ -1,32 +1,104 @@
-# cspell:ignore Bcumm
+# cspell:ignore Bcumm nproc
 - name: Normalize dpkg architecture
   ansible.builtin.set_fact:
     spconv_normalized_arch: "{{ ansible_architecture | regex_replace('aarch64', 'arm64') | regex_replace('x86_64', 'amd64') }}"
 
+# --- Pre-built path (non-Jetson) ---
+# Downloads release binaries built against CUDA 12.8.
+
 - name: Set architecture suffix
+  when: not spconv_is_jetson | bool
   ansible.builtin.set_fact:
-    spconv_arch_suffix: "{{ '-jetson' if (spconv_normalized_arch == 'arm64' and spconv_is_jetson | bool) else ('-sbsa' if spconv_normalized_arch == 'arm64' else '') }}"
+    spconv_arch_suffix: "{{ '-sbsa' if spconv_normalized_arch == 'arm64' else '' }}"
 
 - name: Download the cumm package
+  when: not spconv_is_jetson | bool
   ansible.builtin.get_url:
     mode: "0644"
     url: https://github.com/autowarefoundation/spconv_cpp/releases/download/spconv_v{{ spconv_version }}%2Bcumm_v{{ cumm_version }}%2Bcu128/cumm_{{ cumm_version }}_{{ spconv_normalized_arch }}{{ spconv_arch_suffix }}.deb
     dest: /tmp/cumm.deb
 
 - name: Install the cumm package
+  when: not spconv_is_jetson | bool
   become: true
   ansible.builtin.apt:
     deb: /tmp/cumm.deb
     state: present
 
 - name: Download the spconv package
+  when: not spconv_is_jetson | bool
   ansible.builtin.get_url:
     mode: "0644"
     url: https://github.com/autowarefoundation/spconv_cpp/releases/download/spconv_v{{ spconv_version }}%2Bcumm_v{{ cumm_version }}%2Bcu128/spconv_{{ spconv_version }}_{{ spconv_normalized_arch }}{{ spconv_arch_suffix }}.deb
     dest: /tmp/spconv.deb
 
 - name: Install the spconv package
+  when: not spconv_is_jetson | bool
   become: true
   ansible.builtin.apt:
     deb: /tmp/spconv.deb
+    state: present
+
+# --- Build-from-source path (Jetson) ---
+# The pre-built binaries are compiled against CUDA 12.8, which is incompatible with
+# JetPack's CUDA. We build against the system CUDA instead.
+
+- name: Install build dependencies for spconv/cumm (Jetson)
+  when: spconv_is_jetson | bool
+  become: true
+  ansible.builtin.apt:
+    name:
+      - cmake
+      - build-essential
+    state: present
+    update_cache: true
+
+- name: Clone spconv_cpp source (Jetson)
+  when: spconv_is_jetson | bool
+  ansible.builtin.git:
+    repo: https://github.com/autowarefoundation/spconv_cpp
+    dest: /tmp/spconv_cpp
+    version: "spconv_v{{ spconv_version }}+cumm_v{{ cumm_version }}"
+    force: false
+
+- name: Create cumm build directory (Jetson)
+  when: spconv_is_jetson | bool
+  ansible.builtin.file:
+    path: /tmp/spconv_cpp/cumm/build
+    state: directory
+    mode: "0755"
+
+- name: Build cumm (Jetson)
+  when: spconv_is_jetson | bool
+  ansible.builtin.shell:
+    cmd: cmake .. && make && cpack -G DEB
+    chdir: /tmp/spconv_cpp/cumm/build
+    creates: /tmp/spconv_cpp/cumm/_packages/cumm_{{ cumm_version }}_arm64.deb
+
+- name: Install cumm deb (Jetson)
+  when: spconv_is_jetson | bool
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/spconv_cpp/cumm/_packages/cumm_{{ cumm_version }}_arm64.deb
+    state: present
+
+- name: Create spconv build directory (Jetson)
+  when: spconv_is_jetson | bool
+  ansible.builtin.file:
+    path: /tmp/spconv_cpp/spconv/build
+    state: directory
+    mode: "0755"
+
+- name: Build spconv (Jetson)
+  when: spconv_is_jetson | bool
+  ansible.builtin.shell:
+    cmd: cmake .. && make -j $(nproc) && cpack -G DEB
+    chdir: /tmp/spconv_cpp/spconv/build
+    creates: /tmp/spconv_cpp/spconv/_packages/spconv_{{ spconv_version }}_arm64.deb
+
+- name: Install spconv deb (Jetson)
+  when: spconv_is_jetson | bool
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/spconv_cpp/spconv/_packages/spconv_{{ spconv_version }}_arm64.deb
     state: present

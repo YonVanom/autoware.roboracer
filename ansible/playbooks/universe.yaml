@@ -47,17 +47,21 @@
         rmw_implementation__name: "{{ rmw_implementation }}"
     - role: autoware.dev_env.gdown
     - role: autoware.dev_env.build_tools
-    #- role: autoware.dev_env.agnocast
-    #  when: rosdistro == 'humble'
+    - role: autoware.dev_env.agnocast
+      when: rosdistro == 'humble' and not (jetson | default(false))
 
     # Autoware module dependencies
+    - role: autoware.dev_env.opencv_jetson
+      when: jetson | default(false)
     - role: autoware.dev_env.geographiclib
     - role: autoware.dev_env.cuda
       when: prompt_install_nvidia == 'y'
     - role: autoware.dev_env.tensorrt
       when: prompt_install_nvidia == 'y'
     - role: autoware.dev_env.spconv
-      when: prompt_install_nvidia == 'y'
+      when: prompt_install_nvidia == 'y' or (jetson | default(false))
+      vars:
+        spconv_is_jetson: "{{ jetson | default(false) }}"
 
     # Autoware devel dependencies
     - role: autoware.dev_env.dev_tools

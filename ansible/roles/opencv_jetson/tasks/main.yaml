@@ -9,11 +9,6 @@
     cmd: apt-get remove --purge -y 'libopencv*' 'opencv*' python3-opencv || true
   changed_when: false
 
-- name: Autoremove unused packages after OpenCV removal
-  become: true
-  ansible.builtin.apt:
-    autoremove: true
-
 - name: Install Autoware-compatible OpenCV
   become: true
   ansible.builtin.apt:

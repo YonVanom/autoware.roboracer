@@ -1,0 +1,19 @@
+# cspell:ignore libopencv
+
+# NVIDIA's JetPack ships an OpenCV build that is missing functions required by Autoware.
+# Remove it and install a known-compatible pinned version.
+
+- name: Remove NVIDIA-provided OpenCV packages
+  become: true
+  ansible.builtin.shell:
+    cmd: apt-get remove --purge -y 'libopencv*' 'opencv*' python3-opencv || true
+  changed_when: false
+
+- name: Install Autoware-compatible OpenCV
+  become: true
+  ansible.builtin.apt:
+    name:
+      - libopencv-dev=4.5.4+dfsg-9ubuntu4
+      - python3-opencv=4.5.4+dfsg-9ubuntu4
+    state: present
+    update_cache: true

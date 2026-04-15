@@ -98,7 +98,7 @@ repositories:
   launcher/autoware_launch:
     type: git
     url: https://github.com/YonVanom/autoware_launch.av4ev_gokart.git
-    version: roboracer_max_dev
+    version: roboracer_max
   # sensor_component
   sensor_component/external/sensor_component_description:
     type: git

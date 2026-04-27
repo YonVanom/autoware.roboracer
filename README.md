@@ -1,98 +1,221 @@
-# Autoware - the world's leading open-source software project for autonomous driving
+# Autoware on RoboRacer Max
 
-![Autoware_RViz](https://user-images.githubusercontent.com/63835446/158918717-58d6deaf-93fb-47f9-891d-e242b02cba7b.png)
+This branch contains a version of Autoware with interfaces and configurations specifically for RoboRacer Max. It is bases on release tag 1.6.0 of Autoware.
 
-<!--- Contributors -->
-<p align="center">
-    <a href="https://github.com/autowarefoundation/autoware_universe/graphs/contributors">
-        <img src="https://img.shields.io/github/contributors/autowarefoundation/autoware_universe?style=flat&label=Autoware%20Universe%20Contributors"
-            alt="Autoware Universe Contributors" /></a>
-    <a href="https://github.com/autowarefoundation/autoware/graphs/contributors">
-        <img src="https://img.shields.io/github/contributors/autowarefoundation/autoware?style=flat&label=Autoware%20Contributors"
-            alt="Autoware Contributors" /></a>
-</p>
+This readme contains information on installing and running Autoware on the Roboracer Max. The original Autoware readme can be found [here](./README_AUTOWARE.md) for reference.
 
-<!--- Commit Activity -->
-<p align="center">
-    <a href="https://github.com/autowarefoundation/autoware_universe/pulse">
-        <img src="https://img.shields.io/github/commit-activity/m/autowarefoundation/autoware_universe?style=flat&label=Autoware%20Universe%20Commit%20Activity"
-            alt="Autoware Universe Activity" /></a>
-    <a href="https://github.com/autowarefoundation/autoware/pulse">
-        <img src="https://img.shields.io/github/commit-activity/m/autowarefoundation/autoware?style=flat&label=Autoware%20Commit%20Activity"
-            alt="Autoware Activity" /></a>
-</p>
+---
 
-<!--- License -->
-<p align="center">
-    <a href="https://github.com/autowarefoundation/autoware/blob/main/LICENSE">
-        <img src="https://img.shields.io/github/license/autowarefoundation/autoware?style=flat&label=License"
-            alt="License" /></a>
-</p>
+# Supported Platforms
 
-<!--- CI Reports -->
-<p align="center">
-    <a href="https://github.com/autowarefoundation/autoware/actions/workflows/health-check.yaml?query=branch%3Amain">
-        <img src="https://img.shields.io/github/actions/workflow/status/autowarefoundation/autoware/health-check.yaml?style=flat&label=health-check"
-            alt="health-check CI" /></a>
-    <a href="https://app.codecov.io/gh/autowarefoundation/autoware_universe">
-        <img src="https://img.shields.io/codecov/c/gh/autowarefoundation/autoware_universe?style=flat&label=Coverage&logo=codecov&logoColor=white"
-            alt="Code Coverage" /></a>
-</p>
+While this guide focuses on setting up Autoware on the RoboRacer Max platform, this setup supports both:
 
-<!--- Social Media -->
-<p align="center">
-    <a href="https://discord.gg/Q94UsPvReQ">
-        <img src="https://img.shields.io/discord/953808765935816715?logo=discord&logoColor=white&style=flat&label=Autoware%20Discord"
-            alt="Autoware Discord"></a>
-    <a href="https://twitter.com/intent/follow?screen_name=AutowareFdn">
-        <img src="https://img.shields.io/twitter/follow/AutowareFdn?logo=x&logoColor=white&style=flat"
-            alt="Autoware Twitter / X"></a>
-    <a href="https://www.linkedin.com/company/the-autoware-foundation/">
-        <img src="https://img.shields.io/badge/Linkedin-Autoware%20Foundation-0a66c2?logo=linkedin&logoColor=white&style=flat"
-            alt="Autoware Linkedin"></a>
-</p>
+- **Jetson AGX Orin (RoboRacer Max target platform)**  
+- **x86_64 host machine (Ubuntu 22.04)** — recommended for development and faster builds  
 
-Autoware is an open-source software stack for self-driving vehicles, built on the [Robot Operating System (ROS)](https://www.ros.org/). It includes all of the necessary functions to drive an autonomous vehicles from localization and object detection to route planning and control, and was created with the aim of enabling as many individuals and organizations as possible to contribute to open innovations in autonomous driving technology.
+The setup process is almost identical on both platforms, **differences are indicated in the applicable steps**.
 
-![Autoware architecture](https://static.wixstatic.com/media/984e93_552e338be28543c7949717053cc3f11f~mv2.png/v1/crop/x_0,y_1,w_1500,h_879/fill/w_863,h_506,al_c,usm_0.66_1.00_0.01,enc_auto/Autoware-GFX_edited.png)
+---
 
-## Documentation
+# Autoware Installation on Jetson AGX Orin
 
-To learn more about using or developing Autoware, refer to the [Autoware documentation site](https://autowarefoundation.github.io/autoware-documentation/main/). You can find the source for the documentation in [autowarefoundation/autoware-documentation](https://github.com/autowarefoundation/autoware-documentation).
+This tutorial provides step-by-step instructions for installing and setting up the Autoware development environment on the RoboRacer car. The Autoware installation process in this branch is modified from the main one to adapt to the Jetson AGX Orin hardware and software systems. 
 
-## Repository overview
+For instructions on manually setting up a development environment for a standard Autoware release on NVIDIA Jetson, see [manual_setup.md](./manual_setup.md).
 
-- [autowarefoundation/autoware](https://github.com/autowarefoundation/autoware)
-  - Meta-repository containing `.repos` files to construct an Autoware workspace.
-  - It is anticipated that this repository will be frequently forked by users, and so it contains minimal information to avoid unnecessary differences.
-- [autowarefoundation/autoware_core](https://github.com/autowarefoundation/autoware_core)
-  - Main repository for high-quality, stable ROS packages for Autonomous Driving.
-  - Based on [Autoware.Auto](https://gitlab.com/autowarefoundation/autoware.auto/AutowareAuto) and [Autoware.Universe](https://github.com/autowarefoundation/autoware_universe).
-- [autowarefoundation/autoware_universe](https://github.com/autowarefoundation/autoware_universe)
-  - Repository for experimental, cutting-edge ROS packages for Autonomous Driving.
-  - Autoware Universe was created to make it easier for researchers and developers to extend the functionality of Autoware Core
-- [autowarefoundation/autoware_launch](https://github.com/autowarefoundation/autoware_launch)
-  - Launch configuration repository containing node configurations and their parameters.
-- [autowarefoundation/autoware-github-actions](https://github.com/autowarefoundation/autoware-github-actions)
-  - Contains [reusable GitHub Actions workflows](https://docs.github.com/ja/actions/learn-github-actions/reusing-workflows) used by multiple repositories for CI.
-  - Utilizes the [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself) concept.
-- [autowarefoundation/autoware-documentation](https://github.com/autowarefoundation/autoware-documentation)
-  - Documentation repository for Autoware users and developers.
-  - Since Autoware Core/Universe has multiple repositories, a central documentation repository is important to make information accessible from a single place.
+This guide assumes you are using `JetPack 6.2.1` on `Ubuntu 22.04` and will run this `RoboRacer Max` version of `Autoware 1.6.0` on `ROS2 humble`.
 
-## Using Autoware.AI
+The original [Autoware installation documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/) from main branch is here for your reference.
 
-If you wish to use Autoware.AI, the previous version of Autoware based on ROS 1, switch to [autoware-ai](https://github.com/autowarefoundation/autoware_ai) repository. However, be aware that Autoware.AI has reached the end-of-life as of 2022, and we strongly recommend transitioning to Autoware Core/Universe for future use.
+The approximate time investments listed are based on running Jetson AGX Orin on the `MAXN SUPER` power mode.
 
-## Contributing
+## Jetson AGX Orin Only: Flash JetPack 6.2.1 to Jetson AGX Orin
+(Approximate time investment: 1 hour)
 
-- [There is no formal process to become a contributor](https://github.com/autowarefoundation/autoware-projects/wiki#contributors) - you can comment on any [existing issues](https://github.com/autowarefoundation/autoware_universe/issues) or make a pull request on any Autoware repository!
-  - Make sure to follow the [Contribution Guidelines](https://autowarefoundation.github.io/autoware-documentation/main/contributing/).
-  - Take a look at Autoware's [various working groups](https://github.com/autowarefoundation/autoware-projects/wiki#working-group-list) to gain an understanding of any work in progress and to see how projects are managed.
-- If you have any technical questions, you can start a discussion in the [Q&A category](https://github.com/autowarefoundation/autoware/discussions/categories/q-a) to request help and confirm if a potential issue is a bug or not.
+*Skip this section if you are using an x86 host machine.*
 
-## Useful resources
+There are multiple ways to install JetPack on a Jetson as described in [Jetpack 6.2.1 Documentation](https://developer.nvidia.com/embedded/jetpack-sdk-621). The recommended ways to install are via the `NVIDIA SDK Manager Method`. This guide was tested using JetPack 6.2.1. Other JetPack versions may also work but have not yet been tested.
 
-- [Autoware Foundation homepage](https://www.autoware.org/)
-- [Support guidelines](https://autowarefoundation.github.io/autoware-documentation/main/support/support-guidelines/)
-- [CI metrics](https://autowarefoundation.github.io/autoware-ci-metrics/)
+### NVIDIA SDK Manager Method:
+This method requires a Linux host computer running Ubuntu Linux x64 version `22.04` with `~40GB` of disk space
+
+For this method, you will first install `NVIDIA SDK Manager` on your host machine, connect the host machine to the Jetson AGX Orin via a `USB-C` cable, download all of the necessary JetPack components using the SDK Manager, and then flash the JetPack to the target Jetson AGX Orin. This method allows you to directly flash the JetPack to the `NVME SSD drive` on the RoboRacer car's Jetson. You may need to create an NVIDIA account to download the NVIDIA SDK manager.
+
+1. Download and install [SDK Manager](https://developer.nvidia.com/sdk-manager) on your host machine.
+
+2. Follow the steps at [Install Jetson Software with SDK Manager](https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html). Select JetPack version 6.2.1. The target hardware will be the Jetson Orin Nano.
+    Make sure to also select `Jetson SDK Components` for installation. This is not selected by default.
+
+3. If you have trouble flashing the JetPack, you can put the Jetson into [`Force Recovery Mode`](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/howto.html#force-recovery-mode).
+
+
+## Set up Autoware development environment 
+(Approximate time investment: 2-3 hours)
+
+Some of the dependencies required for Autoware can't be or aren't installed automatically on Jetson platforms. These need to be set up manually.
+1. Start by updating the system en ensuring the Jetpack packages are installed on your Jetson. This will install, among others, CUDA, CUDNN and TensorRT, which are required by Autoware. 
+
+    **On Jetson AGX Orin:**
+    ```bash
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install -y nvidia-jetpack
+    sudo reboot
+    ```
+    **On x86 host machine:**
+    ```bash
+    sudo apt update && sudo apt upgrade -y
+    ```
+
+2. Clone the `roboracer_humble` branch of Autoware (this branch is currently based on version `1.6.0` of `autowarefoundation/autoware`) and move to the directory.
+    ```bash
+    cd ~
+    git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+    cd autoware
+    ```
+
+3. Install the Autoware dependencies by running the provided setup script.
+
+   **On Jetson AGX Orin:**
+   ```bash
+   ./setup-dev-env.sh --jetson
+   ```
+
+   **On x86 host machine:**
+   ```bash
+   ./setup-dev-env.sh
+   ```
+   
+   The --jetson flag implies --no-cuda and --no-nvidia as these are already installed with the JetPack It also installs a compatible version of opencv (instead of the nvidia one), builds spconv and cumm from scratch to ensure they are compatible with the version of cuda on the jetson, and disables the agnocast installation as described in [manual_setup.md](./manual_setup.md).
+
+4. Lastly, make sure the CUDNN and TensorRT CMAKE modules are installed:
+    ```bash
+    sudo apt update 
+    sudo apt install -y ros-humble-cudnn-cmake-module ros-humble-tensorrt-cmake-module
+    ```
+
+
+## Set up Autoware workspace 
+(Approximate time investment: 3-4 hours)
+
+1. Make sure you are in the previously created autoware directory
+    ```bash
+    cd autoware
+    ```
+
+2. Create the `src` directory and clone repositories into it.
+
+   Autoware uses [vcstool](https://github.com/dirk-thomas/vcstool) to construct workspaces.
+
+   ```bash
+   mkdir src
+   vcs import src < autoware.repos
+   ```
+
+3. Install dependent ROS packages.
+
+    ```bash
+    source /opt/ros/humble/setup.bash
+    sudo apt update && sudo apt upgrade
+    rosdep update
+    rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+    ```
+
+3. Create swapfile. (Originally from Autoware [troubleshooting section](https://autowarefoundation.github.io/autoware-documentation/main/support/troubleshooting/#build-issues))
+
+   Building Autoware requires a lot of memory. On systems with limited RAM, the system can crash during a build because of insufficient memory. If ecountering this problem, 16-32GB of swap can be configured to resolve it.
+
+   Optional: Check the current swapfile
+   ```bash
+   free -h
+   ```
+   
+   Create a new swapfile
+   ```bash
+   sudo fallocate -l 32G /swapfile
+   sudo chmod 600 /swapfile
+   sudo mkswap /swapfile
+   sudo swapon /swapfile
+   ```
+
+   Optional: Check if the change is reflected
+   ```bash
+   free -h
+   ```
+
+   Optional: To make this change permanent
+   ```bash
+   sudo bash -c 'echo "/swapfile swap swap defaults 0 0" >> /etc/fstab'
+   ```
+
+4. Build the workspace.
+
+   Autoware uses [colcon](https://github.com/colcon) to build workspaces.
+   For more advanced options, refer to the [documentation](https://colcon.readthedocs.io/).
+
+   ```bash
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+   ```
+
+   Ignore the `stderr` warnings during the build.
+   
+## Network and DDS settings for ROS 2 and Autoware
+Follow the official [Autoware documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/dds-settings/) to correctly configure the network and DDS settings.
+ 
+---
+   
+# Autoware RoboRacer Max and the Autoware-RoboRacer Off-Road Simulator
+This section provides instructions on setting up a closed-loop simulation with this **RoboRacer Max version of Autoware** and the **Autoware-RoboRacer off-road simulator**. It provides both instructions on running a `software-in-the-loop` simulation, i.e., both Autoware and the off-road simulator running on the same **x86 host machine**, and a `hardware-in-the-loop` simulation, i.e., Autoware running on the **target Jetson AGX Orin** connected to the off-road simulator on a **x86 host machine**. 
+
+---
+
+## Software-in-the-Loop Simulation
+This section show how to run a `software-in-the-loop` simulation, where both **Autoware** and the **off-road simulator** are running on the same **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation. (See section `Network and DDS settings for ROS 2 and Autoware` above).
+
+### Prerequisites
+
+1. Set up up the Off-Road Simulator
+
+   Follow the instructions provided in the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefoundation/autoware_off-road_sim) repository to set up the simulator on your **x86 host**. Specifically, **Docker Setup** and **Running the Simulation**.
+
+2. Download the `pumptrack` example map for Autoware
+
+   This Autoware map matches the default map in the off-road simulator.
+   ```bash
+   cd ~/autoware_map
+   gdown --folder https://drive.google.com/drive/folders/1KIsmlb0mSIftXOjA30qQLbdIt7t2ISJv?usp=sharing
+   ```
+
+### Run the simulator
+
+   In one terminal window on your **x86 host**, run the simulator using the Docker container:
+   ```bash
+   cd autoware_off-road_sim
+   ./docker/run.sh
+   ```
+   
+   Make sure to launch the simulator using the provided autoware-specific configuration file. Inside the docker container:
+   ```bash
+   /root/isaacsim/_build/linux-x86_64/release/python.sh scripts/launch_sim.py --config scripts/configs/pumptrack_autoware_config.yaml
+   ```   
+   
+   (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
+   
+### Run Autoware RoboRacer Max
+
+   In a second terminal window on your **x86 host**:
+   ```bash
+   cd autoware
+   ```
+   
+   Make sure to source both your base ROS 2 install, and Autoware:
+   ```bash
+   source /opt/ros/humble/setup.bash
+   source install/setup.bash
+   ```
+   
+   Launch Autoware using the RoboRace Max-specific launch files:
+   ```bash
+   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ``` 
+   Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.
+   

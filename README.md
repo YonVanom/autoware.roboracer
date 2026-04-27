@@ -171,11 +171,21 @@ This section provides instructions on setting up a closed-loop simulation with t
 ## Software-in-the-Loop Simulation
 This section show how to run a `software-in-the-loop` simulation, where both **Autoware** and the **off-road simulator** are running on the same **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation. (See section `Network and DDS settings for ROS 2 and Autoware` above).
 
-### 1. Prerequisite: Setting up the Off-Road Simulator
+### Prerequisites
+
+1. Set up up the Off-Road Simulator
 
    Follow the instructions provided in the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefoundation/autoware_off-road_sim) repository to set up the simulator on your **x86 host**. Specifically, **Docker Setup** and **Running the Simulation**.
 
-### 2. Run the simulator
+2. Download the `pumptrack` example map for Autoware
+
+   This Autoware map matches the default map in the off-road simulator.
+   ```bash
+   cd ~/autoware_map
+   gdown --folder https://drive.google.com/drive/folders/1KIsmlb0mSIftXOjA30qQLbdIt7t2ISJv?usp=sharing
+   ```
+
+### Run the simulator
 
    In one terminal window on your **x86 host**, run the simulator using the Docker container:
    ```bash
@@ -190,7 +200,7 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    
    (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
    
-### 3. Run Autoware RoboRacer Max
+### Run Autoware RoboRacer Max
 
    In a second terminal window on your **x86 host**:
    ```bash
@@ -205,6 +215,6 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    
    Launch Autoware using the RoboRace Max-specific launch files:
    ```bash
-   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=/home/xlab/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
    ``` 
    

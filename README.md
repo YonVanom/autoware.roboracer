@@ -48,7 +48,7 @@ For this method, you will first install `NVIDIA SDK Manager` on your host machin
 ## Set up Autoware development environment 
 (Approximate time investment: 2-3 hours)
 
-Some of the dependencies required for Autoware can't be or aren't installed automatically. These need to be set up manually.
+Some of the dependencies required for Autoware can't be or aren't installed automatically on Jetson platforms. These need to be set up manually.
 1. Start by updating the system en ensuring the Jetpack packages are installed on your Jetson. This will install, among others, CUDA, CUDNN and TensorRT, which are required by Autoware. 
 
     **On Jetson AGX Orin:**

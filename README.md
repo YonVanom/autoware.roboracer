@@ -4,6 +4,8 @@ This branch contains a version of Autoware with interfaces and configurations sp
 
 This readme contains information on installing and running Autoware on the Roboracer Max. The original Autoware readme can be found [here](./README_AUTOWARE.md) for reference.
 
+---
+
 # Supported Platforms
 
 While this guide focuses on setting up Autoware on the RoboRacer Max platform, this setup supports both:
@@ -12,6 +14,8 @@ While this guide focuses on setting up Autoware on the RoboRacer Max platform, t
 - **x86_64 host machine (Ubuntu 22.04)** — recommended for development and faster builds  
 
 The setup process is almost identical on both platforms, **differences are indicated in the applicable steps**.
+
+---
 
 # Autoware Installation on Jetson AGX Orin
 
@@ -156,9 +160,13 @@ Some of the dependencies required for Autoware can't be or aren't installed auto
    
 ## Network and DDS settings for ROS 2 and Autoware
 Follow the official [Autoware documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/dds-settings/) to correctly configure the network and DDS settings.
+ 
+---
    
 # Autoware RoboRacer Max and the Autoware-RoboRacer Off-Road Simulator
 This section provides instructions on setting up a closed-loop simulation with this **RoboRacer Max version of Autoware** and the **Autoware-RoboRacer off-road simulator**. It provides both instructions on running a `software-in-the-loop` simulation, i.e., both Autoware and the off-road simulator running on the same **x86 host machine**, and a `hardware-in-the-loop` simulation, i.e., Autoware running on the **target Jetson AGX Orin** connected to the off-road simulator on a **x86 host machine**. 
+
+---
 
 ## Software-in-the-Loop Simulation
 This section show how to run a `software-in-the-loop` simulation, where both **Autoware** and the **off-road simulator** are running on the same **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation. (See section `Network and DDS settings for ROS 2 and Autoware` above).

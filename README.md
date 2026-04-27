@@ -163,10 +163,12 @@ This section provides instructions on setting up a closed-loop simulation with t
 ## Software-in-the-Loop Simulation
 This section show how to run a `software-in-the-loop` simulation, where both **Autoware** and the **off-road simulator** are running on the same **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation. (See section `Network and DDS settings for ROS 2 and Autoware` above).
 
-1. Prerequisite: Setting up the Off-Road Simulator
+### 1. Prerequisite: Setting up the Off-Road Simulator
+
    Follow the instructions provided in the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefoundation/autoware_off-road_sim) repository to set up the simulator on your **x86 host**. Specifically, **Docker Setup** and **Running the Simulation**.
 
-2. Run the simulator
+### 2. Run the simulator
+
    In one terminal window on your **x86 host**, run the simulator using the Docker container:
    ```bash
    cd autoware_off-road_sim
@@ -180,7 +182,8 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    
    (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
    
-3. Run Autoware RoboRacer Max
+### 3. Run Autoware RoboRacer Max
+
    In a second terminal window on your **x86 host**:
    ```bash
    cd autoware

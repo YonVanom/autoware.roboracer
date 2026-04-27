@@ -217,4 +217,5 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    ```bash
    ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
    ``` 
+   Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.
    

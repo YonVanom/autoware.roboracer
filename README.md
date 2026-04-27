@@ -154,4 +154,46 @@ Some of the dependencies required for Autoware can't be or aren't installed auto
 
    Ignore the `stderr` warnings during the build.
    
+## Network and DDS settings for ROS 2 and Autoware
+Follow the official [Autoware documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/dds-settings/) to correctly configure the network and DDS settings.
+   
+# Autoware RoboRacer Max and the Autoware-RoboRacer Off-Road Simulator
+This section provides instructions on setting up a closed-loop simulation with this **RoboRacer Max version of Autoware** and the **Autoware-RoboRacer off-road simulator**. It provides both instructions on running a `software-in-the-loop` simulation, i.e., both Autoware and the off-road simulator running on the same **x86 host machine**, and a `hardware-in-the-loop` simulation, i.e., Autoware running on the **target Jetson AGX Orin** connected to the off-road simulator on a **x86 host machine**. 
+
+## Software-in-the-Loop Simulation
+This section show how to run a `software-in-the-loop` simulation, where both **Autoware** and the **off-road simulator** are running on the same **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation. (See section `Network and DDS settings for ROS 2 and Autoware` above).
+
+1. Prerequisite: Setting up the Off-Road Simulator
+   Follow the instructions provided in the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefoundation/autoware_off-road_sim) repository to set up the simulator on your **x86 host**. Specifically, **Docker Setup** and **Running the Simulation**.
+
+2. Run the simulator
+   In one terminal window on your **x86 host**, run the simulator using the Docker container:
+   ```bash
+   cd autoware_off-road_sim
+   ./docker/run.sh
+   ```
+   
+   Make sure to launch the simulator using the provided autoware-specific configuration file. Inside the docker container:
+   ```bash
+   /root/isaacsim/_build/linux-x86_64/release/python.sh scripts/launch_sim.py --config scripts/configs/pumptrack_autoware_config.yaml
+   ```   
+   
+   (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
+   
+3. Run Autoware RoboRacer Max
+   In a second terminal window on your **x86 host**:
+   ```bash
+   cd autoware
+   ```
+   
+   Make sure to source both your base ROS 2 install, and Autoware:
+   ```bash
+   source /opt/ros/humble/setup.bash
+   source install/setup.bash
+   ```
+   
+   Launch Autoware using the RoboRace Max-specific launch files:
+   ```bash
+   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=/home/xlab/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ``` 
    

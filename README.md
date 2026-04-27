@@ -1,5 +1,157 @@
-# Autoware on Roboracer Max
+# Autoware on RoboRacer Max
 
-This branch contains a version of Autoware with interfaces and configurations specifically for Roboracer Max. It is bases on release tag 1.6.0 of Autoware.
+This branch contains a version of Autoware with interfaces and configurations specifically for RoboRacer Max. It is bases on release tag 1.6.0 of Autoware.
 
 This readme contains information on installing and running Autoware on the Roboracer Max. The original Autoware readme can be found [here](./README_AUTOWARE.md) for reference.
+
+# Supported Platforms
+
+While this guide focuses on setting up Autoware on the RoboRacer Max platform, this setup supports both:
+
+- **Jetson AGX Orin (RoboRacer Max target platform)**  
+- **x86_64 host machine (Ubuntu 22.04)** — recommended for development and faster builds  
+
+The setup process is almost identical on both platforms, **differences are indicated in the applicable steps**.
+
+# Autoware Installation on Jetson AGX Orin
+
+This tutorial provides step-by-step instructions for installing and setting up the Autoware development environment on the RoboRacer car. The Autoware installation process in this branch is modified from the main one to adapt to the Jetson AGX Orin hardware and software systems. 
+
+For instructions on manually setting up a development environment for a standard Autoware release on NVIDIA Jetson, see [manual_setup.md](./manual_setup.md).
+
+This guide assumes you are using `JetPack 6.2.1` on `Ubuntu 22.04` and will run this `RoboRacer Max` version of `Autoware 1.6.0` on `ROS2 humble`.
+
+The original [Autoware installation documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/) from main branch is here for your reference.
+
+The approximate time investments listed are based on running Jetson AGX Orin on the `MAXN SUPER` power mode.
+
+## Jetson AGX Orin Only: Flash JetPack 6.2.1 to Jetson AGX Orin
+(Approximate time investment: 1 hour)
+
+*Skip this section if you are using an x86 host machine.*
+
+There are multiple ways to install JetPack on a Jetson as described in [Jetpack 6.2.1 Documentation](https://developer.nvidia.com/embedded/jetpack-sdk-621). The recommended ways to install are via the `NVIDIA SDK Manager Method`. This guide was tested using JetPack 6.2.1. Other JetPack versions may also work but have not yet been tested.
+
+### NVIDIA SDK Manager Method:
+This method requires a Linux host computer running Ubuntu Linux x64 version `22.04` with `~40GB` of disk space
+
+For this method, you will first install `NVIDIA SDK Manager` on your host machine, connect the host machine to the Jetson AGX Orin via a `USB-C` cable, download all of the necessary JetPack components using the SDK Manager, and then flash the JetPack to the target Jetson AGX Orin. This method allows you to directly flash the JetPack to the `NVME SSD drive` on the RoboRacer car's Jetson. You may need to create an NVIDIA account to download the NVIDIA SDK manager.
+
+1. Download and install [SDK Manager](https://developer.nvidia.com/sdk-manager) on your host machine.
+
+2. Follow the steps at [Install Jetson Software with SDK Manager](https://docs.nvidia.com/sdk-manager/install-with-sdkm-jetson/index.html). Select JetPack version 6.2.1. The target hardware will be the Jetson Orin Nano.
+    Make sure to also select `Jetson SDK Components` for installation. This is not selected by default.
+
+3. If you have trouble flashing the JetPack, you can put the Jetson into [`Force Recovery Mode`](https://developer.nvidia.com/embedded/learn/jetson-agx-orin-devkit-user-guide/howto.html#force-recovery-mode).
+
+
+## Set up Autoware development environment 
+(Approximate time investment: 2-3 hours)
+
+Some of the dependencies required for Autoware can't be or aren't installed automatically. These need to be set up manually.
+1. Start by updating the system en ensuring the Jetpack packages are installed on your Jetson. This will install, among others, CUDA, CUDNN and TensorRT, which are required by Autoware. 
+
+    **On Jetson AGX Orin:**
+    ```bash
+    sudo apt update && sudo apt upgrade -y
+    sudo apt install -y nvidia-jetpack
+    sudo reboot
+    ```
+    **On x86 host machine:**
+    ```bash
+    sudo apt update && sudo apt upgrade -y
+    ```
+
+2. Clone the `roboracer_humble` branch of Autoware (this branch is currently based on version `1.6.0` of `autowarefoundation/autoware`) and move to the directory.
+    ```bash
+    cd ~
+    git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+    cd autoware
+    ```
+
+3. Install the Autoware dependencies by running the provided setup script.
+
+   **On Jetson AGX Orin:**
+   ```bash
+   ./setup-dev-env.sh --jetson
+   ```
+
+   **On x86 host machine:**
+   ```bash
+   ./setup-dev-env.sh
+   ```
+   
+   The --jetson flag implies --no-cuda and --no-nvidia as these are already installed with the JetPack It also installs a compatible version of opencv (instead of the nvidia one), builds spconv and cumm from scratch to ensure they are compatible with the version of cuda on the jetson, and disables the agnocast installation as described in [manual_setup.md](./manual_setup.md).
+
+4. Lastly, make sure the CUDNN and TensorRT CMAKE modules are installed:
+    ```bash
+    sudo apt update 
+    sudo apt install -y ros-humble-cudnn-cmake-module ros-humble-tensorrt-cmake-module
+    ```
+
+
+## Set up Autoware workspace 
+(Approximate time investment: 3-4 hours)
+
+1. Make sure you are in the previously created autoware directory
+    ```bash
+    cd autoware
+    ```
+
+2. Create the `src` directory and clone repositories into it.
+
+   Autoware uses [vcstool](https://github.com/dirk-thomas/vcstool) to construct workspaces.
+
+   ```bash
+   mkdir src
+   vcs import src < autoware.repos
+   ```
+
+3. Install dependent ROS packages.
+
+    ```bash
+    source /opt/ros/humble/setup.bash
+    sudo apt update && sudo apt upgrade
+    rosdep update
+    rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
+    ```
+
+3. Create swapfile. (Originally from Autoware [troubleshooting section](https://autowarefoundation.github.io/autoware-documentation/main/support/troubleshooting/#build-issues))
+
+   Building Autoware requires a lot of memory. On systems with limited RAM, the system can crash during a build because of insufficient memory. If ecountering this problem, 16-32GB of swap can be configured to resolve it.
+
+   Optional: Check the current swapfile
+   ```bash
+   free -h
+   ```
+   
+   Create a new swapfile
+   ```bash
+   sudo fallocate -l 32G /swapfile
+   sudo chmod 600 /swapfile
+   sudo mkswap /swapfile
+   sudo swapon /swapfile
+   ```
+
+   Optional: Check if the change is reflected
+   ```bash
+   free -h
+   ```
+
+   Optional: To make this change permanent
+   ```bash
+   sudo bash -c 'echo "/swapfile swap swap defaults 0 0" >> /etc/fstab'
+   ```
+
+4. Build the workspace.
+
+   Autoware uses [colcon](https://github.com/colcon) to build workspaces.
+   For more advanced options, refer to the [documentation](https://colcon.readthedocs.io/).
+
+   ```bash
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+   ```
+
+   Ignore the `stderr` warnings during the build.
+   
+   

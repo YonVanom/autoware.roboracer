@@ -250,7 +250,12 @@ This section show how to run a `hardware-in-the-loop` simulation, where **Autowa
    cd autoware_off-road_sim
    nano scripts/configs/pumptrack_autoware_config.yaml
    ```
-   In the `network_setup` section of the config file, update the `network_interface` to the interface via which the target can be reached. This should be the same as the `NetworkInterface` defined in your `cyclonedds.xml`.
+   In the `network_setup` section of the config file, update the `network_interface` to the interface via which the target can be reached. This should be the same as the `NetworkInterface` defined in your `cyclonedds.xml`. For example:
+   ```bash
+   network_setup:
+     ros2_domain_id: 0
+     network_interface: "enp2s0"
+   ```
    
 ### Run the simulator on the host
 

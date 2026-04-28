@@ -219,3 +219,74 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    ``` 
    Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.
    
+---
+   
+## Hardware-in-the-Loop Simulation
+This section show how to run a `hardware-in-the-loop` simulation, where **Autoware** is running on one machine, e.g., the **target Jetson AGX Orin**, and the **off-road simulator** is running on a separate **x86 host machine**. It assumes you have configured the network and DDS settings according to the Autoware documentation on both machines. (See section `Network and DDS settings for ROS 2 and Autoware` above).
+   
+   
+### Prerequisites
+
+1. Set up up the Off-Road Simulator on the **x86 host**
+
+   Follow the instructions provided in the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefoundation/autoware_off-road_sim) repository to set up the simulator on your **x86 host**. Specifically, **Docker Setup** and **Running the Simulation**.
+
+2. Download the `pumptrack` example map for Autoware on the **target, e.g., the Jetson AGX Orin**
+
+   This Autoware map matches the default map in the off-road simulator.
+   ```bash
+   cd ~/autoware_map
+   gdown --folder https://drive.google.com/drive/folders/1KIsmlb0mSIftXOjA30qQLbdIt7t2ISJv?usp=sharing
+   
+3. Update network configuration
+
+   Make sure both the target and host are connected using an ethernet connection, either directly or through a local network.
+   Follow the steps outlined in the Autoware documentation for [communication across multiple computers](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/multiple-computers/). Make sure to **manually set the network interface** on both the host and target device, and to follow the steps regarding **time synchronization**.
+   
+4. Update the simulation configuration on the **host**
+
+   Modify the `scripts/configs/pumptrack_autoware_config.yaml` configuration on the host. For example:
+   ```bash
+   cd autoware_off-road_sim
+   nano scripts/configs/pumptrack_autoware_config.yaml
+   ```
+   In the `network_setup` section of the config file, update the `network_interface` to the interface via which the target can be reached. This should be the same as the `NetworkInterface` defined in your `cyclonedds.xml`. For example:
+   ```yaml
+   network_setup:
+     ros2_domain_id: 0
+     network_interface: "enp2s0"
+   ```
+   
+### Run the simulator on the host
+
+   In one terminal window on your **x86 host**, run the simulator using the Docker container:
+   ```bash
+   cd autoware_off-road_sim
+   ./docker/run.sh
+   ```
+   
+   Make sure to launch the simulator using the provided autoware-specific configuration file. Inside the docker container:
+   ```bash
+   /root/isaacsim/_build/linux-x86_64/release/python.sh scripts/launch_sim.py --config scripts/configs/pumptrack_autoware_config.yaml
+   ```   
+   
+   (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
+   
+### Run Autoware RoboRacer Max on the target
+
+   In a terminal window on your **target**:
+   ```bash
+   cd autoware
+   ```
+   
+   Make sure to source both your base ROS 2 install, and Autoware:
+   ```bash
+   source /opt/ros/humble/setup.bash
+   source install/setup.bash
+   ```
+   
+   Launch Autoware using the RoboRace Max-specific launch files:
+   ```bash
+   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ``` 
+   Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.

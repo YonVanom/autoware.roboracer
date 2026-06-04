@@ -108,7 +108,7 @@ Some of the dependencies required for Autoware can't be or aren't installed auto
 
    ```bash
    mkdir src
-   vcs import src < autoware.repos
+   vcs import src < repositories/autoware.repos
    ```
 
 3. Install dependent ROS packages.

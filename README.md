@@ -107,7 +107,7 @@ Some of the dependencies required for Autoware can't be or aren't installed auto
    Autoware uses [vcstool](https://github.com/dirk-thomas/vcstool) to construct workspaces.
 
    ```bash
-   mkdir src
+   mkdir -p src
    vcs import src < repositories/autoware.repos
    ```
 

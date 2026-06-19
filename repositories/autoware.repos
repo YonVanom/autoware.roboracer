@@ -108,6 +108,10 @@ repositories:
     type: git
     url: https://github.com/tier4/nebula.git
     version: v0.2.6
+  sensor_component/external/zed-ros2-wrapper:
+    type: git
+    url: https://github.com/stereolabs/zed-ros2-wrapper.git
+    version: v5.4.0
   # Fork of transport_drivers that enables reduction of copy operations
   sensor_component/transport_drivers:
     type: git

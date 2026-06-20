@@ -1,16 +1,16 @@
-# Autoware on RoboRacer Max
+# Autoware on RoboRacer
 
-This branch contains a version of Autoware with interfaces and configurations specifically for RoboRacer Max. It is bases on release tag 1.6.0 of Autoware.
+This branch contains a version of Autoware with interfaces and configurations specifically for RoboRacer. It is bases on release tag 1.6.0 of Autoware.
 
-This readme contains information on installing and running Autoware on the Roboracer Max. The original Autoware readme can be found [here](./README_AUTOWARE.md) for reference.
+This readme contains information on installing and running Autoware on the Roboracer. The original Autoware readme can be found [here](./README_AUTOWARE.md) for reference.
 
 ---
 
 # Supported Platforms
 
-While this guide focuses on setting up Autoware on the RoboRacer Max platform, this setup supports both:
+While this guide focuses on setting up Autoware on the RoboRacer platform, this setup supports both:
 
-- **Jetson AGX Orin (RoboRacer Max target platform)**  
+- **Jetson AGX Orin (RoboRacer target platform)**  
 - **x86_64 host machine (Ubuntu 22.04)** — recommended for development and faster builds  
 
 The setup process is almost identical on both platforms, **differences are indicated in the applicable steps**.
@@ -23,7 +23,7 @@ This tutorial provides step-by-step instructions for installing and setting up t
 
 For instructions on manually setting up a development environment for a standard Autoware release on NVIDIA Jetson, see [manual_setup.md](./manual_setup.md).
 
-This guide assumes you are using `JetPack 6.2.1` on `Ubuntu 22.04` and will run this `RoboRacer Max` version of `Autoware 1.6.0` on `ROS2 humble`.
+This guide assumes you are using `JetPack 6.2.1` on `Ubuntu 22.04` and will run this `RoboRacer` version of `Autoware 1.6.0` on `ROS2 humble`.
 
 The original [Autoware installation documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/) from main branch is here for your reference.
 
@@ -163,8 +163,8 @@ Follow the official [Autoware documentation](https://autowarefoundation.github.i
  
 ---
    
-# Autoware RoboRacer Max and the Autoware-RoboRacer Off-Road Simulator
-This section provides instructions on setting up a closed-loop simulation with this **RoboRacer Max version of Autoware** and the **Autoware-RoboRacer off-road simulator**. It provides both instructions on running a `software-in-the-loop` simulation, i.e., both Autoware and the off-road simulator running on the same **x86 host machine**, and a `hardware-in-the-loop` simulation, i.e., Autoware running on the **target Jetson AGX Orin** connected to the off-road simulator on a **x86 host machine**. 
+# Autoware RoboRacer and the Autoware-RoboRacer Off-Road Simulator
+This section provides instructions on setting up a closed-loop simulation with this **RoboRacer version of Autoware** and the **Autoware-RoboRacer off-road simulator**. It provides both instructions on running a `software-in-the-loop` simulation, i.e., both Autoware and the off-road simulator running on the same **x86 host machine**, and a `hardware-in-the-loop` simulation, i.e., Autoware running on the **target Jetson AGX Orin** connected to the off-road simulator on a **x86 host machine**. 
 
 ---
 
@@ -200,7 +200,7 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    
    (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
    
-### Run Autoware RoboRacer Max
+### Run Autoware RoboRacer
 
    In a second terminal window on your **x86 host**:
    ```bash
@@ -213,9 +213,9 @@ This section show how to run a `software-in-the-loop` simulation, where both **A
    source install/setup.bash
    ```
    
-   Launch Autoware using the RoboRace Max-specific launch files:
+   Launch Autoware using the RoboRacer-specific launch files:
    ```bash
-   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ros2 launch offroad_launch e2e_simulator.launch.xml vehicle_model:=roboracer_offroad_isaac sensor_model:=roboracer_offroad_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
    ``` 
    Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.
    
@@ -272,7 +272,7 @@ This section show how to run a `hardware-in-the-loop` simulation, where **Autowa
    
    (This configuration assumes you are using the loopback network device `lo` as according to the Autoware documentation. It also disables remapping of frame ids.)
    
-### Run Autoware RoboRacer Max on the target
+### Run Autoware RoboRacer on the target
 
    In a terminal window on your **target**:
    ```bash
@@ -285,8 +285,8 @@ This section show how to run a `hardware-in-the-loop` simulation, where **Autowa
    source install/setup.bash
    ```
    
-   Launch Autoware using the RoboRace Max-specific launch files:
+   Launch Autoware using the RoboRacer-specific launch files:
    ```bash
-   ros2 launch max_launch e2e_simulator.launch.xml vehicle_model:=roboracer_max sensor_model:=roboracer_max_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
+   ros2 launch offroad_launch e2e_simulator.launch.xml vehicle_model:=roboracer_offroad_isaac sensor_model:=roboracer_offroad_isaac_sensor_kit map_path:=$HOME/autoware_map/pumptrack/ launch_vehicle_interface:=true 
    ``` 
    Note: this assumes `autoware_map` is located in your home directoy. If this is not the case, update the `map_path` in the above command.

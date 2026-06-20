@@ -2,6 +2,8 @@
 
 This branch contains Autoware with interfaces and configurations for the RoboRacer Off-Road platform, based on Autoware release 1.6.0. The original Autoware README is [here](./README_AUTOWARE.md).
 
+![RoboRacer Off-Road](docs/assets/roboracer_offroad.jpg)
+
 [Demo video](https://drive.google.com/file/d/15U8plRqHoRn4PuRkvt0tRaTNCsWwtDhl/view?usp=sharing)
 
 ## Documentation

@@ -69,7 +69,7 @@ Some of the dependencies required for Autoware can't be or aren't installed auto
 2. Clone the `roboracer_humble` branch of Autoware (this branch is currently based on version `1.6.0` of `autowarefoundation/autoware`) and move to the directory.
     ```bash
     cd ~
-    git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+    git clone -b roboracer_humble https://github.com/mlab-upenn/autoware.roboracer.git autoware
     cd autoware
     ```
 

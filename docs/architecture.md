@@ -72,7 +72,7 @@ Located at `src/universe/autoware_universe/sensing/roboracer_sim/`. Sensor bridg
 
 ## Sensing and Actuation Suite
 
-The RoboRacer Off-Road uses a **ZED stereo camera** as its primary sensor. The ZED provides:
+The RoboRacer Off-Road uses a **ZED X Mini stereo camera** as its primary sensor. The ZED provides:
 - **RGB images**, used for visual reference and camera-based perception
 - **Depth images**, converted to point clouds for NDT-based localization
 - **Point cloud**, derived from the depth images

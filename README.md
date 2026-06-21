@@ -4,7 +4,7 @@ This branch contains Autoware with interfaces and configurations for the RoboRac
 
 ![RoboRacer Off-Road](docs/assets/roboracer_offroad.jpg)
 
-[Demo video](https://drive.google.com/file/d/15U8plRqHoRn4PuRkvt0tRaTNCsWwtDhl/view?usp=sharing)
+[Demo video](https://drive.google.com/file/d/1fciCvVt9UoEv7jkQyfKumc3qMmLJFu2U/view?usp=sharing)
 
 ## Documentation
 

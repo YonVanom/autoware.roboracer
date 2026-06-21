@@ -47,8 +47,8 @@ Manual control requires holding the dead-man button on the joystick. The button 
 
 | Button | Function |
 |--------|----------|
-| Button 7 (hold) | Enable manual driving; releasing stops the vehicle |
-| Button 6 (hold) | Enable autonomous control mode |
+| Button 7 (RB) | Enable manual driving; releasing stops the vehicle |
+| Button 6 (LB) | Enable autonomous control mode |
 
 Speed and steering are mapped to axes 1 and 2 respectively. The joystick device is configured via `device_id` in `joy_teleop.yaml`.
 

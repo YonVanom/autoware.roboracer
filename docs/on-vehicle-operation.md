@@ -43,14 +43,14 @@ This brings up the vehicle interface and joystick teleop without any perception,
 
 **Dead-man switch**
 
-Manual control requires holding the dead-man button on the joystick. The button mapping is configured in `joy_teleop.yaml`:
+Manual control requires holding the dead-man button on the controller. The button mapping is configured in `joy_teleop.yaml`:
 
 | Button | Function |
 |--------|----------|
 | Button 7 (RB) | Enable manual driving; releasing stops the vehicle |
 | Button 6 (LB) | Enable autonomous control mode |
 
-Speed and steering are mapped to axes 1 and 2 respectively. The joystick device is configured via `device_id` in `joy_teleop.yaml`.
+Speed and steering are mapped to the left and right sticks respectively.
 
 ---
 

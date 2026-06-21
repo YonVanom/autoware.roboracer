@@ -4,7 +4,7 @@ This guide installs Autoware (based on Autoware 1.6.0, ROS 2 Humble) on a Jetson
 
 For installation on an x86 host machine, see [Installation, x86 Host](x86-host.md).
 
-The approximate time investments are based on running the Jetson AGX Orin in `MAXN SUPER` power mode.
+The approximate time investments are based on running the Jetson AGX Orin in `MAXN` power mode.
 
 ---
 

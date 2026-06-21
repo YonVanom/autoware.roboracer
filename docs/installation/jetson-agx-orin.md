@@ -92,7 +92,7 @@ Some Autoware dependencies cannot be installed automatically on Jetson. These mu
    rosdep install -y --from-paths src --ignore-src --rosdistro $ROS_DISTRO
    ```
 
-4. Create a swap file. Building Autoware requires substantial memory. On systems with limited RAM, the build can crash. 16–32 GB of swap resolves this.
+4. (Optional) Create a swap file. Building Autoware requires substantial memory. On systems with limited RAM, the build can crash. 16–32 GB of swap resolves this.
 
    ```bash
    # Check current swap

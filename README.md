@@ -33,7 +33,7 @@ Full instructions are in the **[docs/](./docs/Home.md)** folder:
 
 ```bash
 # Clone
-git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+git clone -b roboracer_humble https://github.com/mlab-upenn/autoware.roboracer.git autoware
 cd autoware
 
 # Install dependencies

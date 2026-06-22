@@ -60,17 +60,19 @@ Choose a launch mode based on your use case (see [Launch Modes](../launch-modes.
 **Standard launch:**
 ```bash
 ros2 launch offroad_launch e2e_simulator.launch.xml \
-  vehicle_model:=roboracer_offroad \
+  vehicle_model:=roboracer_offroad_isaac \
   sensor_model:=roboracer_offroad_isaac_sensor_kit \
-  map_path:=$HOME/autoware_map/pumptrack/
+  map_path:=$HOME/autoware_map/pumptrack/ \
+  launch_vehicle_interface:=true
 ```
 
 **Minimal racing launch (circuit planner, lowest overhead):**
 ```bash
 ros2 launch offroad_launch_minimal e2e_simulator_minimal.launch.xml \
-  vehicle_model:=roboracer_offroad \
+  vehicle_model:=roboracer_offroad_isaac \
   sensor_model:=roboracer_offroad_isaac_sensor_kit \
-  map_path:=$HOME/autoware_map/pumptrack/
+  map_path:=$HOME/autoware_map/pumptrack/ \
+  launch_vehicle_interface:=true
 ```
 
 > Update `map_path` if `autoware_map` is not in your home directory.

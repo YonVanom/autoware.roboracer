@@ -19,7 +19,7 @@ For installation on the Jetson AGX Orin target platform, see [Installation, Jets
 
    ```bash
    cd ~
-   git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+   git clone -b roboracer_humble https://github.com/mlab-upenn/autoware.roboracer.git autoware
    cd autoware
    ```
 
@@ -65,8 +65,15 @@ For installation on the Jetson AGX Orin target platform, see [Installation, Jets
 
 4. Build the workspace.
 
+   The ZED packages (`zed_components`, `zed_debug`) require the ZED SDK to be installed. Either install it from the [ZED SDK Downloads](https://www.stereolabs.com/developers/release) page, or skip those packages during the build:
+
    ```bash
+   # With ZED SDK installed
    colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release
+
+   # Without ZED SDK
+   colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release \
+     --packages-skip zed_components zed_debug
    ```
 
    Ignore `stderr` warnings during the build.

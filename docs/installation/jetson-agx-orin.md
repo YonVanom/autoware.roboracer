@@ -25,8 +25,28 @@ Requires a Linux host running Ubuntu 22.04 x64 with ~40 GB of free disk space.
 
 ---
 
-## 2. Set Up Autoware Dependencies
-*(Approximate time: 2–3 hours)*
+## 2. Install ZED Capture Card Drivers
+
+The RoboRacer Off-Road uses a ZED capture card. Install the correct driver for your card before proceeding.
+
+Identify which driver version matches your card and JetPack version, then follow the installation steps to completion:
+
+- [Driver Installation Guide](https://www.stereolabs.com/docs/embedded/zed-link/install-the-drivers)
+- [Driver Downloads](https://www.stereolabs.com/developers/drivers)
+
+---
+
+## 3. Install the ZED SDK
+
+Download and install the ZED SDK version that matches your JetPack version:
+
+- [SDK Downloads](https://www.stereolabs.com/developers/release)
+- [SDK Installation Guide, Jetson](https://www.stereolabs.com/docs/development/zed-sdk/jetson)
+
+---
+
+## 4. Set Up Autoware Dependencies
+*(Approximate time: 2-3 hours)*
 
 Some Autoware dependencies cannot be installed automatically on Jetson. These must be set up first.
 
@@ -42,7 +62,7 @@ Some Autoware dependencies cannot be installed automatically on Jetson. These mu
 
    ```bash
    cd ~
-   git clone -b roboracer_humble https://github.com/YonVanom/autoware.av4ev_gokart.git autoware
+   git clone -b roboracer_humble https://github.com/mlab-upenn/autoware.roboracer.git autoware
    cd autoware
    ```
 
@@ -67,7 +87,7 @@ Some Autoware dependencies cannot be installed automatically on Jetson. These mu
 
 ---
 
-## 3. Set Up the Autoware Workspace
+## 5. Set Up the Autoware Workspace
 *(Approximate time: 3–4 hours)*
 
 1. Ensure you are in the autoware directory.
@@ -118,7 +138,7 @@ Some Autoware dependencies cannot be installed automatically on Jetson. These mu
 
 ---
 
-## 4. Network and DDS Settings
+## 6. Network and DDS Settings
 
 Follow the official [Autoware DDS documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/additional-settings-for-developers/network-configuration/dds-settings/) to configure network and DDS settings correctly before running.
 

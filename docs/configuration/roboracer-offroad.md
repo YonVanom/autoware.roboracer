@@ -91,8 +91,8 @@ These parameters scale the Autoware defaults from full-size vehicles to the Robo
 
 | Parameter | Default | Off-Road | Reason |
 |-----------|---------|----------|--------|
-| `input_delay` | 0.24 s | **0.08 s** | Measured servo command-to-response delay |
-| `vehicle_model_steer_tau` | 0.27 s | **0.12 s** | Measured servo first-order time constant |
+| `input_delay` | 0.24 s | **0.08 s** | Estimated servo command-to-response delay |
+| `vehicle_model_steer_tau` | 0.27 s | **0.12 s** | Estimated servo first-order time constant |
 | `steering_lpf_cutoff_hz` | 3.0 Hz | **10.0 Hz** | 3 Hz attenuated legitimate fast steering commands from the RC servo |
 | `curvature_smoothing_num_traj` | 15 | **3** | 15 × 0.1 m = 1.5 m window over-smoothed corners; 3 × 0.1 m ≈ 1× wheelbase |
 | `curvature_smoothing_num_ref_steer` | 15 | **3** | Same |

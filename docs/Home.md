@@ -41,22 +41,3 @@ This wiki covers installing, running, and tuning Autoware on the RoboRacer Off-R
 |-------|-------------|
 | [RoboRacer Off-Road Configuration](configuration/roboracer-offroad.md) | RC-specific parameter overrides and their reasoning |
 | [Track Tuning Guide](configuration/tuning-guide.md) | Symptom-based guide: "the car does X, change Y" |
-
----
-
-## Setting Up This Wiki on GitHub
-
-The canonical source for all wiki pages is the `docs/` folder in this repository. To mirror them to the GitHub wiki:
-
-1. Enable the wiki on the GitHub repository (Settings → Features → Wikis).
-2. Clone the wiki repository:
-   ```bash
-   git clone https://github.com/<org>/<repo>.wiki.git
-   ```
-3. Copy the contents of `docs/` into the cloned wiki repo and push:
-   ```bash
-   cp -r docs/* <repo>.wiki/
-   cd <repo>.wiki && git add . && git commit -m "Sync docs" && git push
-   ```
-
-To keep the wiki in sync automatically, a GitHub Actions workflow that runs on push to `main` can automate step 3.

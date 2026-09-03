@@ -14,13 +14,13 @@ Follow the [Autoware-RoboRacer Off-Road Simulator](https://github.com/autowarefo
 
 ---
 
-## 2. Download the Pumptrack Map
+## 2. Download the Pennovation Map
 
 This Autoware map matches the default map in the off-road simulator.
 
 ```bash
 cd ~/autoware_map
-gdown --folder https://drive.google.com/drive/folders/1KIsmlb0mSIftXOjA30qQLbdIt7t2ISJv?usp=sharing
+gdown --folder https://drive.google.com/drive/folders/1I0uMWwcsWBFlG6vO7KkBcRngaGOyqtOz?usp=sharing
 ```
 
 ---
@@ -38,7 +38,7 @@ Inside the Docker container, launch using the Autoware-specific config:
 
 ```bash
 /root/isaacsim/_build/linux-x86_64/release/python.sh scripts/launch_sim.py \
-  --config scripts/configs/pumptrack_autoware_config.yaml
+  --config scripts/configs/pennovation_kar_physx.yaml
 ```
 
 This config uses the loopback network device `lo` (as per Autoware DDS documentation) and disables frame ID remapping.
@@ -60,18 +60,18 @@ Choose a launch mode based on your use case (see [Launch Modes](../launch-modes.
 **Standard launch:**
 ```bash
 ros2 launch offroad_launch e2e_simulator.launch.xml \
-  vehicle_model:=roboracer_offroad_isaac \
-  sensor_model:=roboracer_offroad_isaac_sensor_kit \
-  map_path:=$HOME/autoware_map/pumptrack/ \
+  vehicle_model:=kar_gokart_vehicle \
+  sensor_model:=kar_gokart_sensor_kit \
+  map_path:=$HOME/autoware_map/pennovation/ \
   launch_vehicle_interface:=true
 ```
 
 **Minimal racing launch (circuit planner, lowest overhead):**
 ```bash
 ros2 launch offroad_launch_minimal e2e_simulator_minimal.launch.xml \
-  vehicle_model:=roboracer_offroad_isaac \
-  sensor_model:=roboracer_offroad_isaac_sensor_kit \
-  map_path:=$HOME/autoware_map/pumptrack/ \
+  vehicle_model:=kar_gokart_vehicle \
+  sensor_model:=kar_gokart_sensor_kit \
+  map_path:=$HOME/autoware_map/pennovation/ \
   launch_vehicle_interface:=true
 ```
 

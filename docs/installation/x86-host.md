@@ -19,7 +19,7 @@ For installation on the Jetson AGX Orin target platform, see [Installation, Jets
 
    ```bash
    cd ~
-   git clone -b roboracer_humble https://github.com/mlab-upenn/autoware.roboracer.git autoware
+   git clone -b kar_gokart_humble https://github.com/YonVanom/autoware.roboracer.git autoware
    cd autoware
    ```
 
